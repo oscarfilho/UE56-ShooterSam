@@ -45,7 +45,7 @@ AShooterSamCharacter::AShooterSamCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
-
+	UPawnMovementComponent* MovementComponent = GetMovementComponent();
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -77,7 +77,7 @@ void AShooterSamCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	UE_LOG(LogTemp, Warning, TEXT("Movement X: %.2f, Y: %.2f"), MovementVector.X, MovementVector.Y);
+	//UE_LOG(LogTemp, Warning, TEXT("Movement X: %.2f, Y: %.2f"), MovementVector.X, MovementVector.Y);
 
 	// route the input
 	DoMove(MovementVector.X, MovementVector.Y);
@@ -87,7 +87,7 @@ void AShooterSamCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
-	UE_LOG(LogTemp, Warning, TEXT("Look Vector: %s"), *LookAxisVector.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Look Vector: %s"), *LookAxisVector.ToString());
 
 
 	// route the input

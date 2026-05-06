@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "Blueprint/UserWidget.h"
 #include "ShooterSam.h"
+#include "Kismet/GameplayStatics.h"
 #include "Widgets/Input/SVirtualJoystick.h"
 
 void AShooterSamPlayerController::BeginPlay()
@@ -24,12 +25,15 @@ void AShooterSamPlayerController::BeginPlay()
 			// add the controls to the player screen
 			MobileControlsWidget->AddToPlayerScreen(0);
 
-		} else {
-
-			UE_LOG(LogShooterSam, Error, TEXT("Could not spawn mobile controls widget."));
-
 		}
+		else {
+			UE_LOG(LogShooterSam, Error, TEXT("Could not spawn mobile controls widget."));
+		}
+	}
 
+	HUDWidget = CreateWidget<UHUDWidget>(this, HUDWidgetClass);
+	if (HUDWidget) {
+		HUDWidget->AddToViewport();
 	}
 }
 

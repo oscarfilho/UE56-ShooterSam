@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "HUDWidget.h"
 #include "ShooterSamPlayerController.generated.h"
 
 class UInputMappingContext;
@@ -34,6 +35,11 @@ protected:
 
 	/** Pointer to the mobile controls widget */
 	TObjectPtr<UUserWidget> MobileControlsWidget;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UHUDWidget> HUDWidgetClass;
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UHUDWidget* HUDWidget;
 
 	/** Gameplay initialization */
 	virtual void BeginPlay() override;
