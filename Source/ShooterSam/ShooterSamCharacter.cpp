@@ -10,6 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Gun.h"
+#include "Kismet/GameplayStatics.h"
 #include "ShooterSam.h"
 
 AShooterSamCharacter::AShooterSamCharacter()
@@ -50,6 +52,17 @@ AShooterSamCharacter::AShooterSamCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void AShooterSamCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass, GetActorLocation(), GetActorRotation());
+	if (Gun) {
+		Gun->SetOwner(this);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Gun was spawned!"));
+}
+
 void AShooterSamCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
@@ -65,12 +78,17 @@ void AShooterSamCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AShooterSamCharacter::Look);
+
+		// Firing
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AShooterSamCharacter::DoShoot);
 	}
 	else
 	{
 		UE_LOG(LogShooterSam, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
 }
+
+
 
 void AShooterSamCharacter::Move(const FInputActionValue& Value)
 {
@@ -134,4 +152,13 @@ void AShooterSamCharacter::DoJumpEnd()
 {
 	// signal the character to stop jumping
 	StopJumping();
+}
+
+void AShooterSamCharacter::DoShoot()
+{
+	if (Gun) {
+		Gun->PullTrigger();
+	}
+
+	UE_LOG(LogTemp, Display, TEXT("Shoot was triggered!"));
 }
