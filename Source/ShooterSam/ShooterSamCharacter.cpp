@@ -56,11 +56,14 @@ void AShooterSamCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass, GetActorLocation(), GetActorRotation());
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+
 	if (Gun) {
+		UE_LOG(LogTemp, Display, TEXT("Gun was spawned successfully!"));
 		Gun->SetOwner(this);
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Gun was spawned!"));
 }
 
 void AShooterSamCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

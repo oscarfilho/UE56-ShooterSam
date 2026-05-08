@@ -18,7 +18,7 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, Category="Components")
-	USceneComponent* Root;
+	USceneComponent* SceneRoot;
 
 	UPROPERTY(EditAnywhere, Category="Components")
 	USkeletalMeshComponent* Mesh;
