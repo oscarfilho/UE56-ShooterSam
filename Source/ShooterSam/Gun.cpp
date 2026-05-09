@@ -33,5 +33,15 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Pulled the trigger!"));
+	if (OwnerController) {
+		FVector pointOfViewLocation;
+		FRotator pointOfViewRotation;
+		OwnerController->GetPlayerViewPoint(pointOfViewLocation, pointOfViewRotation);
+		UE_LOG(LogTemp, Display, TEXT("Point Viewer. Location: %s, Rotation: %s"), 
+			*pointOfViewLocation.ToCompactString(),
+			*pointOfViewRotation.ToString());
+
+		DrawDebugCamera(GetWorld(), pointOfViewLocation, pointOfViewRotation, 90.0f, 2.0f, FColor::Red, true);
+	}
 }
 

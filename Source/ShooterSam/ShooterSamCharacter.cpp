@@ -63,6 +63,7 @@ void AShooterSamCharacter::BeginPlay()
 		UE_LOG(LogTemp, Display, TEXT("Gun was spawned successfully!"));
 		Gun->SetOwner(this);
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+		Gun->OwnerController = GetController();
 	}
 }
 

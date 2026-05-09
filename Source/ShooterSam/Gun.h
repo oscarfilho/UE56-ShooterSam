@@ -23,6 +23,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="Components")
 	USkeletalMeshComponent* Mesh;
 
+	UPROPERTY(VisibleAnywhere)
+	AController* OwnerController;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
