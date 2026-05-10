@@ -26,6 +26,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	AController* OwnerController;
 
+	UPROPERTY(EditAnywhere, Category = "Gun")
+	float MaxRange = 1000.0f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

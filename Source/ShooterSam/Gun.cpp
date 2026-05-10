@@ -2,6 +2,7 @@
 
 
 #include "Gun.h"
+#include "ShooterSamCharacter.h"
 
 // Sets default values
 AGun::AGun()
@@ -41,7 +42,40 @@ void AGun::PullTrigger()
 			*pointOfViewLocation.ToCompactString(),
 			*pointOfViewRotation.ToString());
 
-		DrawDebugCamera(GetWorld(), pointOfViewLocation, pointOfViewRotation, 90.0f, 2.0f, FColor::Red, true);
+		//AShooterSamCharacter* Character = Cast<AShooterSamCharacter>(GetOwner());
+		//Character->GetCameraBoom->TargetArmLength
+		FVector EndPoint = pointOfViewLocation + pointOfViewRotation.Vector() * MaxRange;
+
+		UE_LOG(LogTemp, Display, TEXT("End Point: %s"), *EndPoint.ToCompactString());
+
+		FHitResult HitResult;
+		
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+		Params.AddIgnoredActor(GetOwner());
+
+		bool IsHit = GetWorld()->LineTraceSingleByChannel(HitResult, pointOfViewLocation,
+			EndPoint, 
+			ECollisionChannel::ECC_GameTraceChannel2,
+			Params);
+
+		if (IsHit) {
+			AActor* HitActor = HitResult.GetActor();
+			UPrimitiveComponent* Comp = HitResult.GetComponent();
+
+			if (HitActor != nullptr) {
+				UE_LOG(LogTemp, Display, TEXT("Hit the Actor: %s"), *HitActor->GetActorNameOrLabel());
+			}
+			else {
+				UE_LOG(LogTemp, Display, TEXT("Hit Actor is nullptr"));
+			}
+
+			UE_LOG(LogTemp, Display, TEXT("Hit Component: %s"), *Comp->GetName());
+
+			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 20.0f, 12, FColor::Red, true);
+		}
+
+		//DrawDebugCamera(GetWorld(), pointOfViewLocation, pointOfViewRotation, 90.0f, 2.0f, FColor::Red, true);
 	}
 }
 
