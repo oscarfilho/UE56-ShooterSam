@@ -3,6 +3,7 @@
 
 #include "Gun.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "ShooterSamCharacter.h"
 
 
@@ -30,6 +31,8 @@ void AGun::BeginPlay()
 
 	if (MuzzleFlashParticleSystem)
 		MuzzleFlashParticleSystem->Deactivate();
+
+	//GetWorldTimerManager().SetTimer()
 }
 
 // Called every frame
@@ -41,7 +44,6 @@ void AGun::Tick(float DeltaTime)
 
 void AGun::PullTrigger()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Pulled the trigger!"));
 	if (MuzzleFlashParticleSystem) {
 		MuzzleFlashParticleSystem->Activate(true);
 	}
@@ -50,13 +52,12 @@ void AGun::PullTrigger()
 		FVector pointOfViewLocation;
 		FRotator pointOfViewRotation;
 		OwnerController->GetPlayerViewPoint(pointOfViewLocation, pointOfViewRotation);
-		UE_LOG(LogTemp, Display, TEXT("Point Viewer. Location: %s, Rotation: %s"), 
-			*pointOfViewLocation.ToCompactString(),
-			*pointOfViewRotation.ToString());
 
-		//AShooterSamCharacter* Character = Cast<AShooterSamCharacter>(GetOwner());
-		//Character->GetCameraBoom->TargetArmLength
+		AShooterSamCharacter* Character = Cast<AShooterSamCharacter>(GetOwner());
+
 		FVector EndPoint = pointOfViewLocation + pointOfViewRotation.Vector() * MaxRange;
+
+		DrawDebugLine(GetWorld(), pointOfViewLocation, EndPoint, FColor::Red, true, 5.0f);
 
 		UE_LOG(LogTemp, Display, TEXT("End Point: %s"), *EndPoint.ToCompactString());
 
