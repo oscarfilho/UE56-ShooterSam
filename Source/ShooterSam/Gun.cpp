@@ -2,7 +2,9 @@
 
 
 #include "Gun.h"
+#include "Kismet/GameplayStatics.h"
 #include "ShooterSamCharacter.h"
+
 
 // Sets default values
 AGun::AGun()
@@ -15,13 +17,19 @@ AGun::AGun()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(SceneRoot);
+
+	MuzzleFlashParticleSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("MuzzleFlash"));
+	MuzzleFlashParticleSystem->SetupAttachment(Mesh);
+
 }
 
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (MuzzleFlashParticleSystem)
+		MuzzleFlashParticleSystem->Deactivate();
 }
 
 // Called every frame
@@ -34,6 +42,10 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Pulled the trigger!"));
+	if (MuzzleFlashParticleSystem) {
+		MuzzleFlashParticleSystem->Activate(true);
+	}
+
 	if (OwnerController) {
 		FVector pointOfViewLocation;
 		FRotator pointOfViewRotation;
@@ -49,6 +61,10 @@ void AGun::PullTrigger()
 		UE_LOG(LogTemp, Display, TEXT("End Point: %s"), *EndPoint.ToCompactString());
 
 		FHitResult HitResult;
+
+		//if (MuzzleFlashParticleSystem) {
+			//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), MuzzleFlash, Mesh->GetSocketLocation(TEXT("MuzzleFlashSocket")), pointOfViewRotation);
+		//}
 		
 		FCollisionQueryParams Params;
 		Params.AddIgnoredActor(this);
@@ -60,19 +76,17 @@ void AGun::PullTrigger()
 			Params);
 
 		if (IsHit) {
-			AActor* HitActor = HitResult.GetActor();
-			UPrimitiveComponent* Comp = HitResult.GetComponent();
-
-			if (HitActor != nullptr) {
-				UE_LOG(LogTemp, Display, TEXT("Hit the Actor: %s"), *HitActor->GetActorNameOrLabel());
+			if (ImpactEffect) {
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, HitResult.ImpactPoint, HitResult.ImpactPoint.Rotation());
 			}
-			else {
-				UE_LOG(LogTemp, Display, TEXT("Hit Actor is nullptr"));
+			AActor* DamagedActor = HitResult.GetActor();
+			if (DamagedActor) {
+				UGameplayStatics::ApplyDamage(DamagedActor, BulletDamage, OwnerController, this, UDamageType::StaticClass());
+
 			}
 
-			UE_LOG(LogTemp, Display, TEXT("Hit Component: %s"), *Comp->GetName());
 
-			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 20.0f, 12, FColor::Red, true);
+			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 5.0f, 16, FColor::Red, true);
 		}
 
 		//DrawDebugCamera(GetWorld(), pointOfViewLocation, pointOfViewRotation, 90.0f, 2.0f, FColor::Red, true);
