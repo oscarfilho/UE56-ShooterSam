@@ -14,6 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "ShooterSam.h"
 
+
 AShooterSamCharacter::AShooterSamCharacter()
 {
 	// Set size for collision capsule

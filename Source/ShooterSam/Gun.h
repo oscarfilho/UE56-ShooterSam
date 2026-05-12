@@ -51,3 +51,19 @@ public:
 	void PullTrigger();
 
 };
+
+
+class Shape {
+protected:
+	int32 Sides;
+
+public:
+	virtual void Explain();
+};
+
+
+class Rectangle : public Shape {
+public:
+	void SetSides(int32 sides);
+	void Explain() override;
+};

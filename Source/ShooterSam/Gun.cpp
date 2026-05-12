@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "ShooterSamCharacter.h"
 
+#define LOG(x) UE_LOG(LogTemp, Display, TEXT(x))
 
 // Sets default values
 AGun::AGun()
@@ -24,16 +25,38 @@ AGun::AGun()
 
 }
 
+void Shape::Explain() {
+	LOG("I'm a shape!");
+}
+
+void Rectangle::SetSides(int32 sides) {
+	Sides = sides;
+}
+
+void Rectangle::Explain() {
+	LOG("I'm a rectangle!");
+}
+
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Shape shape;
+	Rectangle rectangle;
+
+	Shape* shapePtr = &shape;
+	Shape* shapePtr2 = &rectangle;
+	shapePtr->Explain();
+	shapePtr2->Explain();
 
 	if (MuzzleFlashParticleSystem)
 		MuzzleFlashParticleSystem->Deactivate();
 
 	//GetWorldTimerManager().SetTimer()
 }
+
+
 
 // Called every frame
 void AGun::Tick(float DeltaTime)
