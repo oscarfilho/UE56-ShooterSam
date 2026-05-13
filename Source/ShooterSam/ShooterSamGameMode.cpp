@@ -17,11 +17,11 @@ void AShooterSamGameMode::BeginPlay()
 	TArray<AActor*> ShooterAIs;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterAI::StaticClass(), ShooterAIs);
 	
-	for (AActor* EnemyAI : ShooterAIs) {
-		AShooterAI* EAI = Cast<AShooterAI>(EnemyAI);
-		if (EAI) {
-			EAI->StartBehaviorTree(Player);
-			UE_LOG(LogTemp, Display, TEXT("Actor name %s started behavior tree."), *EAI->GetActorNameOrLabel());
+	for (AActor* AEnemyAI : ShooterAIs) {
+		AShooterAI* EnemyAI = Cast<AShooterAI>(AEnemyAI);
+		if (EnemyAI) {
+			EnemyAI->StartBehaviorTree(Player);
+			UE_LOG(LogTemp, Display, TEXT("Actor name %s started behavior tree."), *EnemyAI->GetActorNameOrLabel());
 		}
 	}
 }
