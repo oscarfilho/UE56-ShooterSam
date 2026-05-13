@@ -2,21 +2,53 @@
 
 
 #include "ShooterAI.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void AShooterAI::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	if (PlayerPawn) {
-		SetFocus(PlayerPawn);
+	ControllerPawn = GetPawn();
+
+	if (EnemyAIBehaviorTree) {
+		RunBehaviorTree(EnemyAIBehaviorTree);
 	}
 }
+//
+void AShooterAI::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
 
-//void AShooterAI::Tick(float DeltaSeconds)
-//{
-//	float DistanceBetween = FVector::Distance(GetPawn()->GetActorLocation(), PlayerPawn->GetActorLocation());
+	//if (PlayerPawn && LineOfSightTo(PlayerPawn)) {
+	//	SetFocus(PlayerPawn);
+	//	MoveToActor(PlayerPawn, 300.0f);
+	//}
+	//else {
+	//	ClearFocus(EAIFocusPriority::Gameplay);
+	//	StopMovement();
+	//}
+
+//
+//	float DistanceBetween = FVector::Distance(ControllerPawn->GetActorLocation(), PlayerPawn->GetActorLocation());
 //	if (PlayerPawn && DistanceBetween < 1000.0f) {
 //		SetFocus(PlayerPawn);
-//		UE_LOG(LogTemp, Warning, TEXT("PlayerPawn is in sight. Distance: %.2f"), DistanceBetween);
+//		UE_LOG(LogTemp, Warning, TEXT("PlayerPawn is IN sight. Distance: %.2f"), DistanceBetween);
 //	}
-//}
+//	else {
+//		ClearFocus(EAIFocusPriority::Gameplay);
+//		UE_LOG(LogTemp, Warning, TEXT("PlayerPawn is OUT of sight. Distance: %.2f"), DistanceBetween);
+//	}
+}
+
+void AShooterAI::StartBehaviorTree(AShooterSamCharacter* Player)
+{
+	if (EnemyAIBehaviorTree) {
+		MyCharacter = Cast<AShooterSamCharacter>(GetPawn());
+
+		if (Player) {
+			PlayerCharacter = Player;
+		}
+		RunBehaviorTree(EnemyAIBehaviorTree);
+	}
+}

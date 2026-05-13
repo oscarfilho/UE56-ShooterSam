@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShooterSamCharacter.h"
 #include "ShooterAI.generated.h"
 
 /**
@@ -17,8 +18,20 @@ class SHOOTERSAM_API AShooterAI : public AAIController
 	
 protected:
 	virtual void BeginPlay() override;
-	//virtual void Tick(float DeltaSeconds) override;
+	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(VisibleAnywhere)
 	APawn* PlayerPawn;
+
+	UPROPERTY(VisibleAnywhere)
+	APawn* ControllerPawn;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	UBehaviorTree* EnemyAIBehaviorTree;
+	
+	AShooterSamCharacter* PlayerCharacter;
+	AShooterSamCharacter* MyCharacter;
+
+public:
+	void StartBehaviorTree(AShooterSamCharacter* Player);
 };

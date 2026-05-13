@@ -42,13 +42,13 @@ void AGun::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Shape shape;
-	Rectangle rectangle;
+	//Shape shape;
+	//Rectangle rectangle;
 
-	Shape* shapePtr = &shape;
-	Shape* shapePtr2 = &rectangle;
-	shapePtr->Explain();
-	shapePtr2->Explain();
+	//Shape* shapePtr = &shape;
+	//Shape* shapePtr2 = &rectangle;
+	//shapePtr->Explain();
+	//shapePtr2->Explain();
 
 	if (MuzzleFlashParticleSystem)
 		MuzzleFlashParticleSystem->Deactivate();
@@ -80,9 +80,9 @@ void AGun::PullTrigger()
 
 		FVector EndPoint = pointOfViewLocation + pointOfViewRotation.Vector() * MaxRange;
 
-		DrawDebugLine(GetWorld(), pointOfViewLocation, EndPoint, FColor::Red, true, 5.0f);
+		//DrawDebugLine(GetWorld(), pointOfViewLocation, EndPoint, FColor::Red, true, 5.0f);
 
-		UE_LOG(LogTemp, Display, TEXT("End Point: %s"), *EndPoint.ToCompactString());
+		//UE_LOG(LogTemp, Display, TEXT("End Point: %s"), *EndPoint.ToCompactString());
 
 		FHitResult HitResult;
 
@@ -110,7 +110,7 @@ void AGun::PullTrigger()
 			}
 
 
-			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 5.0f, 16, FColor::Red, true);
+			//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 5.0f, 16, FColor::Red, true);
 		}
 
 		//DrawDebugCamera(GetWorld(), pointOfViewLocation, pointOfViewRotation, 90.0f, 2.0f, FColor::Red, true);
