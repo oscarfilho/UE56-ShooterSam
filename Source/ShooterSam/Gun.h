@@ -7,6 +7,7 @@
 #include "Components/SceneComponent.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Sound/SoundBase.h"
 #include "Gun.generated.h"
 
 UCLASS()
@@ -31,14 +32,20 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Gun")
 	float MaxRange = 1000.0f;
 
-	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	UPROPERTY(VisibleAnywhere, Category = "Gun Effects")
 	UNiagaraComponent* MuzzleFlashParticleSystem;
 
-	UPROPERTY(EditAnywhere, Category = "Effects")
+	UPROPERTY(EditAnywhere, Category = "Gun Effects")
 	UNiagaraSystem* ImpactEffect;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Gun")
 	float BulletDamage = 10.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Gun")
+	USoundBase* ShootSound;
+
+	UPROPERTY(EditAnywhere, Category = "Gun")
+	USoundBase* ImpactSound;
 
 protected:
 	// Called when the game starts or when spawned

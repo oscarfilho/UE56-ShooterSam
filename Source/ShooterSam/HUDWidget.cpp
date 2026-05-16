@@ -3,3 +3,9 @@
 
 #include "HUDWidget.h"
 
+void UHUDWidget::SetHealthBarPercent(float NewPercent)
+{
+	if (HealthBar && NewPercent >= 0.0f && NewPercent <= 1.0f) {
+		HealthBar->SetPercent(NewPercent);
+	}
+}

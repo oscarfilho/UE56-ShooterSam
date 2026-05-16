@@ -18,7 +18,13 @@ UCLASS(abstract)
 class AShooterSamPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UHUDWidget> HUDWidgetClass;
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UHUDWidget* HUDWidget;
+
 protected:
 
 	/** Input Mapping Contexts */
@@ -36,10 +42,7 @@ protected:
 	/** Pointer to the mobile controls widget */
 	TObjectPtr<UUserWidget> MobileControlsWidget;
 
-	UPROPERTY(EditAnywhere, Category = "UI")
-	TSubclassOf<UHUDWidget> HUDWidgetClass;
-	UPROPERTY(VisibleAnywhere, Category = "UI")
-	UHUDWidget* HUDWidget;
+	
 
 	/** Gameplay initialization */
 	virtual void BeginPlay() override;

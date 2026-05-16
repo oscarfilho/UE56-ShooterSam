@@ -72,6 +72,9 @@ void AGun::PullTrigger()
 	}
 
 	if (OwnerController) {
+		// Play shoot sound
+		UGameplayStatics::PlaySoundAtLocation(this, ShootSound, GetActorLocation());
+
 		FVector pointOfViewLocation;
 		FRotator pointOfViewRotation;
 		OwnerController->GetPlayerViewPoint(pointOfViewLocation, pointOfViewRotation);
@@ -79,17 +82,8 @@ void AGun::PullTrigger()
 		AShooterSamCharacter* Character = Cast<AShooterSamCharacter>(GetOwner());
 
 		FVector EndPoint = pointOfViewLocation + pointOfViewRotation.Vector() * MaxRange;
-
-		//DrawDebugLine(GetWorld(), pointOfViewLocation, EndPoint, FColor::Red, true, 5.0f);
-
-		//UE_LOG(LogTemp, Display, TEXT("End Point: %s"), *EndPoint.ToCompactString());
-
 		FHitResult HitResult;
-
-		//if (MuzzleFlashParticleSystem) {
-			//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), MuzzleFlash, Mesh->GetSocketLocation(TEXT("MuzzleFlashSocket")), pointOfViewRotation);
-		//}
-		
+	
 		FCollisionQueryParams Params;
 		Params.AddIgnoredActor(this);
 		Params.AddIgnoredActor(GetOwner());
@@ -100,6 +94,9 @@ void AGun::PullTrigger()
 			Params);
 
 		if (IsHit) {
+			// Play Impact Sound
+			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, HitResult.ImpactPoint);
+
 			if (ImpactEffect) {
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, HitResult.ImpactPoint, HitResult.ImpactPoint.Rotation());
 			}

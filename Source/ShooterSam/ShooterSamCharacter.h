@@ -111,6 +111,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool IsAlive = true;
 
+	void UpdateHUD();
+
 public:
 
 	/** Returns CameraBoom subobject **/

@@ -13,6 +13,8 @@
 #include "Gun.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterSam.h"
+#include "ShooterSamPlayerController.h"
+
 
 
 AShooterSamCharacter::AShooterSamCharacter()
@@ -69,19 +71,32 @@ void AShooterSamCharacter::BeginPlay()
 	}
 	
 	Health = MaxHealth;
+	UpdateHUD();
 }
 
 void AShooterSamCharacter::OnDamageTaken(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
 	
 	if (IsAlive) {
 		Health = FMath::Max(Health - Damage, 0.0f);
+		UpdateHUD();
+
 		IsAlive = Health <= 0.0f ? false : true;
 
 		if (!IsAlive) {
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			UE_LOG(LogTemp, Warning, TEXT("Character Named %s is DEAD!"), *GetActorNameOrLabel());
+			DetachFromControllerPendingDestroy();
 		}
 		UE_LOG(LogTemp, Display, TEXT("Damage taken by %.2f. Current Health: %.2f, Alived: %s"), Damage, Health, (IsAlive == true ? TEXT("TRUE") : TEXT("FALSE")));
+	}
+}
+
+void AShooterSamCharacter::UpdateHUD()
+{
+	AShooterSamPlayerController* PController = Cast<AShooterSamPlayerController>(GetController());
+	if (PController) {
+		float percent = Health / MaxHealth;
+		PController->HUDWidget->SetHealthBarPercent(percent);
 	}
 }
 

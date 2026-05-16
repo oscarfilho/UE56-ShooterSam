@@ -29,9 +29,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	UBehaviorTree* EnemyAIBehaviorTree;
 	
-	AShooterSamCharacter* PlayerCharacter;
-	AShooterSamCharacter* MyCharacter;
+	
 
 public:
 	void StartBehaviorTree(AShooterSamCharacter* Player);
+	
+	AShooterSamCharacter* PlayerCharacter;
+	AShooterSamCharacter* MyCharacter;
 };
